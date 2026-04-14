@@ -36,6 +36,7 @@ LEAKAGE_COLS = [
     'RFMSegment',     # Leakage : Dormants=100% churn, Champions=0% churn
     'LoyaltyLevel',   # Leakage : Ancien=100% fidèle (dérivé de l'ancienneté=churn signal)
     'FavoriteSeason', # Leakage : Automne=98% fidèle (dérivé des patterns d'achat)
+    'Recency',        # Leakage : Churn = 1 if Recency > 90 else 0
 ]
 
 
@@ -84,20 +85,10 @@ def feature_engineering(df):
         df = df.drop(columns=['LastLoginIP'])
         
     # --- Features comportementales dérivées ---
-    if 'MonetaryTotal' in df.columns and 'Recency' in df.columns:
-        df['MonetaryPerDay'] = df['MonetaryTotal'] / (df['Recency'] + 1)
-        
     if 'MonetaryTotal' in df.columns and 'Frequency' in df.columns:
         df['AvgBasketValue'] = np.where(
             df['Frequency'] > 0,
             df['MonetaryTotal'] / df['Frequency'],
-            0
-        )
-        
-    if 'CustomerTenureDays' in df.columns and 'Recency' in df.columns:
-        df['TenureRatio'] = np.where(
-            df['CustomerTenureDays'] > 0,
-            df['Recency'] / df['CustomerTenureDays'],
             0
         )
     

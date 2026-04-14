@@ -13,8 +13,9 @@ env/
 # ML Models and Data
 models/*.pkl
 models/*.joblib
-data/process/
+data/processed/
 data/train_test/
+scratch/
 # data/raw/  <-- keep this if data is small, but usually best to ignore if large
 
 # Flask/Environment
